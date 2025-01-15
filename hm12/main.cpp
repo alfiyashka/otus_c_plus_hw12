@@ -19,7 +19,8 @@ int main(int argc, const char *argv[])
     const auto rnum = argv[3];
     
     MapReduce mapReduce(atoi(mnum), atoi(rnum), path);
-    mapReduce.run();
+    const auto mapReduceRes = mapReduce.run();
+    std::cout<<"Result - '" << mapReduceRes << "'" <<std::endl;
   }
   catch(const std::exception& e)
   {

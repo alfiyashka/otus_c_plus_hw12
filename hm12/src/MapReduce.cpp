@@ -170,19 +170,32 @@ void Reduce::reduceWork(const UserCycleFunctor& data) const
     return;
 }
 
-void Reduce::reduce(const UserFunctor &func) const
+std::string Reduce::reduce(const UserFunctor &func) const
 {
     const auto &shuffleResult = func.result();
     std::vector<std::future<void>> futures;
+    UserCycleFunctor::dataMap_t reduceRes;
     for (const auto& iRes : shuffleResult)
     {
         futures.emplace_back(std::async(std::launch::async,
-            &Reduce::reduceWork, this, iRes));
+                                        &Reduce::reduceWork, this, iRes));
+        auto isShuffleResultSet = iRes.result();
+        if (!isShuffleResultSet.empty())
+        {
+            reduceRes.insert(*isShuffleResultSet.begin());
+        }
     }
     for (auto &f : futures)
     {
         if (f.valid())
             f.get();
     }
-    return;
+    if (!reduceRes.empty())
+    {
+        return *reduceRes.rbegin();
+    }
+    else
+    {
+        return "";
+    }
 }

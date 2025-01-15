@@ -5,12 +5,29 @@
 #include <vector>
 #include <set>
 #include <string>
+#include <cstring>
 
+struct DataComparatorByLengthAndValue
+{
+    bool operator() (const std::string& ldata, const std::string& rdata) const 
+    {
+        if (ldata.length() < rdata.length())
+        {
+            return true;
+        }
+        else if (ldata.length() == rdata.length())
+        {
+            return std::strcmp(ldata.c_str(), rdata.c_str()) != 0;
+        }
+        return false;
+    }
+
+};
 // common functor to parse cycle work
 class UserCycleFunctor
 {
 public:
-    using dataMap_t = std::multiset<std::string>;
+    using dataMap_t = std::multiset<std::string, DataComparatorByLengthAndValue>;
 
     void operator()(const std::string& data)
     {

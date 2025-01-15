@@ -42,9 +42,9 @@ struct Reduce
 public:
   Reduce(const int rnum) : m_rnum(rnum) {}
 
-  void operator()(const Map &map) const
+  std::string operator()(const Map &map) const
   {
-    reduce(shuffle(map()));
+    return reduce(shuffle(map()));
   }
 
 private:
@@ -60,7 +60,7 @@ private:
   /**
    * reduces data
    */
-  void reduce(const UserFunctor &res) const;
+  std::string reduce(const UserFunctor &func) const;
   const int m_rnum; // reduce threads count
 };
 
@@ -69,11 +69,11 @@ class MapReduce
 public:
   MapReduce(const int mnum, const int rnum, const std::string& path) noexcept
      : m_path(path), m_mnum(mnum), m_rnum(rnum){}
-  void run()
+  std::string run()
   {
     const Map m(m_path, m_mnum);
     const Reduce r(m_rnum);
-    r(m);
+    return r(m);    
   }
 private:
   const int m_mnum;         // map threads count
