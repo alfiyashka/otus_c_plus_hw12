@@ -1,0 +1,46 @@
+
+name: otus_hw12
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+     - 'hm12/**'
+  pull_request:
+    branches: [ "main" ]
+    paths: 
+     - 'hm12/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+    - uses: actions/checkout@v4
+    - run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
+    - run: sudo apt install libboost-filesystem-dev
+    - run: sudo apt install libboost-program-options-dev
+    - run: sudo apt install libboost-regex-dev
+    - run: sudo apt install aptitude
+    - run: aptitude search boost  
+    - run: cmake ${{github.workspace}}/hm12 -DCMAKE_BUILD_TYPE="Release" -DPATCH_VERSION=${{ github.run_number }} 
+    - run: cmake --build .
+    - run: cmake --build . --target package    
+          
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ SECRETS.GITHUB_TOKEN }}
+      with:
+        tag_name: hw12_${{ github.run_number }}
+        release_number: Release  ${{ github.run_number }}
+        draft: false
+        prerelease: false
+    - name: Upload build
+      uses: actions/upload-artifact@v4 
+      with:
+        name: homework12
+        path: /home/runner/work/otus_c_plus_hw12/otus_c_plus_hw12/
