@@ -1,0 +1,15 @@
+function(generate_packages NAME)
+    set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
+    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Valieva Alfiya") 
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libpurple0 (>= 2.10.0), libglib2.0-0 (>= 2.24), libjson-glib-1.0-0 (>= 0.8.0)") 
+
+    set(CPACK_GENERATOR "DEB")
+
+    set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+    set(CPACK_SOURCE_PACKAGE_VERSION ${PROJECT_VERSION})
+
+    set(CPACK_PACKAGE_FILE_NAME ${NAME}-${PROJECT_VERSION}-${CMAKE_SYSTEM_NAME})
+
+    include(CPack)
+endfunction()

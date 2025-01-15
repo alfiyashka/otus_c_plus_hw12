@@ -1,0 +1,6 @@
+#ifndef VERSION_H
+#define VERSION_H
+
+#define OTUS_OUTER_JOIN_VERSION "@join_server_VERSION@"
+
+#endif // VERSION_H
