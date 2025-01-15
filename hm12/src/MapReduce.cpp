@@ -192,7 +192,7 @@ std::string Reduce::reduce(const UserFunctor &func) const
     }
     if (!reduceRes.empty())
     {
-        return *reduceRes.rbegin();
+        return *reduceRes.begin();
     }
     else
     {
